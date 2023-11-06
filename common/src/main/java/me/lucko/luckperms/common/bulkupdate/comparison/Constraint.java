@@ -43,6 +43,14 @@ public class Constraint {
         this.compiledExpression = this.comparison.compile(this.expressionValue);
     }
 
+    public Comparison getComparison() {
+        return this.comparison;
+    }
+
+    public String getExpressionValue() {
+        return this.expressionValue;
+    }
+
     /**
      * Returns if the given value satisfies this constraint
      *

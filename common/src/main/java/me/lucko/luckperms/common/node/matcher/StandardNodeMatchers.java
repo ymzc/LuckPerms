@@ -73,7 +73,7 @@ public final class StandardNodeMatchers {
         return new TypeEquals<>(type);
     }
 
-    private static class Generic extends ConstraintNodeMatcher<Node> {
+    public static class Generic extends ConstraintNodeMatcher<Node> {
         Generic(Constraint constraint) {
             super(constraint);
         }
@@ -84,7 +84,7 @@ public final class StandardNodeMatchers {
         }
     }
 
-    private static final class NodeEquals<T extends Node> extends ConstraintNodeMatcher<T> {
+    public static final class NodeEquals<T extends Node> extends ConstraintNodeMatcher<T> {
         private final T node;
         private final NodeEqualityPredicate equalityPredicate;
 
@@ -92,6 +92,14 @@ public final class StandardNodeMatchers {
             super(Constraint.of(StandardComparison.EQUAL, node.getKey()));
             this.node = node;
             this.equalityPredicate = equalityPredicate;
+        }
+
+        public T getNode() {
+            return this.node;
+        }
+
+        public NodeEqualityPredicate getEqualityPredicate() {
+            return this.equalityPredicate;
         }
 
         @SuppressWarnings("unchecked")
@@ -104,9 +112,16 @@ public final class StandardNodeMatchers {
         }
     }
 
-    private static final class MetaKeyEquals extends ConstraintNodeMatcher<MetaNode> {
+    public static final class MetaKeyEquals extends ConstraintNodeMatcher<MetaNode> {
+        private final String metaKey;
+
         MetaKeyEquals(String metaKey) {
             super(Constraint.of(StandardComparison.SIMILAR, Meta.key(metaKey, StandardComparison.WILDCARD)));
+            this.metaKey = metaKey;
+        }
+
+        public String getMetaKey() {
+            return this.metaKey;
         }
 
         @Override
@@ -115,12 +130,16 @@ public final class StandardNodeMatchers {
         }
     }
 
-    private static final class TypeEquals<T extends Node> extends ConstraintNodeMatcher<T> {
+    public static final class TypeEquals<T extends Node> extends ConstraintNodeMatcher<T> {
         private final NodeType<? extends T> type;
 
-        protected TypeEquals(NodeType<? extends T> type) {
+        TypeEquals(NodeType<? extends T> type) {
             super(getConstraintForType(type));
             this.type = type;
+        }
+
+        public NodeType<? extends T> getType() {
+            return this.type;
         }
 
         @Override
